@@ -25,18 +25,39 @@ import java.util.HashMap;
 
 public class Chipotle {
 
-//    private static double calculate_price(){
-//
-//    }
+    private static double calculate_price(ArrayList<String> burrito){
 
-    private static ArrayList<String> build_burrito(ArrayList<String> burrito){
+    double price=0;
+
+    price = 3 + 0.5 * burrito.size();
+
+    for (String value:burrito){
+        if (
+        (value.equalsIgnoreCase("no beans")) ||
+        (value.equalsIgnoreCase("no salsa")) ||
+        (value.equalsIgnoreCase("no additional veggies")) ||
+        (value.equalsIgnoreCase("no rice"))
+        )
+                price = price - 0.5;
+    }
+
+    return price;
+    }
+
+    private static ArrayList<String> build_burrito(){
+
+    ArrayList<String> burrito = new ArrayList<String>();
 
     Random index = new Random(),
            rand_rice = new Random(),
             rand_meat = new Random(),
             rand_beans = new Random(),
             rand_salsa = new Random(),
-            rand_veggies = new Random();
+            rand_veggies = new Random(),
+            rand_cheese = new Random(),
+            rand_guac = new Random(),
+            rand_queso = new Random(),
+            rand_sour_cream = new Random();
 
 
     int index_rice=0,
@@ -79,6 +100,18 @@ public class Chipotle {
         }
     else burrito.add(veggies[index_veggies]);
 
+    cheese = rand_cheese.nextBoolean();
+    if (cheese) burrito.add("add cheese");
+
+    guac = rand_guac.nextBoolean();
+    if (guac) burrito.add("add guac");
+
+    queso = rand_queso.nextBoolean();
+    if (queso) burrito.add("add queso");
+
+    sour_cream = rand_sour_cream.nextBoolean();
+    if (sour_cream) burrito.add("add sour cream");
+
     return burrito;
     }
 
@@ -86,11 +119,16 @@ public class Chipotle {
     public static void main(String[] args) {
     ArrayList<String> burrito = new ArrayList<String>();
     String formatted = "";
+    double price=0;
 
-    System.out.println("Welcome to Virtual Chipotle.  Here is your randomly generated virtual order for 25 burritos: \n");
+    System.out.println("Welcome to Virtual Chipotle.  Here is your randomly generated virtual order for 25 burritos:");
     for (int i=1; i<=25; i++) {
-        formatted = build_burrito(burrito).toString().replace("[","").replace("]","");
-        System.out.println("Burrito " + i + ": " + formatted);
+        burrito = build_burrito();
+        formatted = burrito.toString().replace("[","").replace("]","");
+        System.out.println("\n\nBurrito " + i + ": " + formatted);
+        price = calculate_price(burrito);
+        System.out.print("Price is: $");
+        System.out.printf("%.2f",price);
         burrito = new ArrayList<String>();
     }
 
